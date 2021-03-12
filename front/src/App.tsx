@@ -1,0 +1,45 @@
+import React from 'react';
+import './App.css';
+import { useTitle } from './utils/utilFunctions';
+import { createMuiTheme, ThemeProvider, CssBaseline } from '@material-ui/core';
+import { Route, Redirect } from 'react-router-dom';
+import { route, urls, startUrl } from './routing/routes';
+import { Content } from './pages/content';
+import { LandingPage } from './pages/start-pages/landing-page';
+
+const theme = createMuiTheme({
+  palette: {
+    type: "light",
+    primary:{
+      main: '#404040'
+    }
+  }
+});
+
+function App() {
+  useTitle("FIS Project");
+  return (
+    <div className="App">
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Route
+          exact
+          path={route(urls.startPage)}
+          component={LandingPage}
+        />
+        <Route exact path="/">
+                <Redirect to={startUrl()} />
+              </Route>
+        <Route
+          exact
+          path={route(urls.contentPage)}
+          component={Content}
+        />
+      </ThemeProvider>
+    </div>
+
+  );
+}
+
+
+export default App;
