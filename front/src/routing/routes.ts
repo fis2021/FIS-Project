@@ -1,18 +1,20 @@
 import { useHistory } from "react-router-dom";
 
 export const urls = {
-    startPage: () => "/app/start",
+    startPage: (p: { route: string }) => `/app/start/${p.route}`,
 
+    loginPage: () => "/app/start/login",
+    registerPage: () => "/app/start/register",
     contentPage: () => "/app/content",
 };
 
-export const startUrl = urls.startPage;
+export const startUrl = urls.loginPage;
 
 export function useRouting() {
     const history = useHistory();
 
     function routeTo(fn: () => string): void;
-    function routeTo<T>(fn: (p:T) => string, params: T): void;
+    function routeTo<T>(fn: (p: T) => string, params: T): void;
     function routeTo<T>(fn: (p?: T) => string, params?: T) {
         history.push(fn(params));
     }
