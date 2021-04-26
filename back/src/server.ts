@@ -1,8 +1,11 @@
 import express, {Request, Response , Application} from 'express';
+import { bookRouter } from './routes/book-routes'
 import logging from "./logging";
 import config from './config';
-
 import mongoose from 'mongoose';
+import morgan from 'morgan';
+import cors from 'cors';
+
 
 const app: Application = express();
 
@@ -13,8 +16,20 @@ mongoose.connect(config.mongo.url,config.mongo.options , () => {
     logging.info(NAMESPACE, 'Connected to DB');
 });
 
-app.get('/', (req: Request,res: Response) => {
-    res.send('Hello');
-})
+app.use(function (req: Request, res: Response, next) {
+    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+    next();
+});
+
+app.use(morgan('tiny'));
+app.use(express.urlencoded({extended: true}));
+app.use(cors());
+
+
+app.use('/api',bookRouter);
+
+
 
 app.listen(config.server.port, () => logging.info(NAMESPACE, `Server running on ${config.server.hostname}:${config.server.port}`))
