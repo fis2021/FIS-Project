@@ -1,6 +1,7 @@
 import { Box, Button, Checkbox, FormControlLabel, Grid, Link, makeStyles, Paper, TextField, Typography } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import React from "react";
+import { urls, useRouting } from "../../routing/routes";
 
 function Copyright() {
     return (
@@ -42,6 +43,8 @@ export type LoginForm = {
 
 export const LoginModal = () => {
     const classes = useStyles();
+
+    const {routeTo} = useRouting();
 
     const initialValues = {
         email: "",
@@ -89,6 +92,7 @@ export const LoginModal = () => {
                                 variant="contained"
                                 color="primary"
                                 className={classes.submit}
+                                onClick={() => routeTo(urls.contentPage)}
                             >
                                 Sign In
                             </Button>
