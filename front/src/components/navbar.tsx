@@ -56,7 +56,22 @@ export const NavBar = () => {
                 </AccountCircleIcon>
             </IconButton>
             </Tooltip>
-           
+            <Menu
+                id="profile-dropdown"
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+            >
+                <MenuItem onClick={handleClose}>
+                    <Typography>Favorites</Typography>
+                </MenuItem>
+                <MenuItem onClick={() => routeTo(urls.adminPanel)}>
+                    <Typography>Admin Panel</Typography>
+                </MenuItem>
+                <MenuItem onClick={() => routeTo(urls.loginPage)}>
+                    <Typography>Log Out</Typography>
+                </MenuItem>
+            </Menu>
         </Toolbar>
     </AppBar>
 }
