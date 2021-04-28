@@ -50,6 +50,11 @@ const DisplayBook = (p: { book: Book , setReload: React.Dispatch<React.SetStateA
                         <Typography style={{ textAlign: "start" }}>{p.book.genre}</Typography>
                     </CardContent>
                 </CardActionArea>
+                <CardActions>
+                    <Button size="small" color="primary" onClick={() => routeTo(urls.bookPage, { id: p.book._id })}>
+                        More Details
+                </Button>
+                </CardActions>
             </Card >
         </Grid>
     );
