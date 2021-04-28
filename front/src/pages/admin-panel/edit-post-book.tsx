@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { useEffectAsync } from '../../hooks/async-hooks';
 import { urls, useRouting } from '../../routing/routes';
-// import { getSingleBook, postBook, putBook } from '../../services/book-service';
+import { getSingleBook, postBook, putBook } from '../../services/book-service';
 
 
 export const BookAdd = (p: RouteComponentProps<{ id: string }>) => {
@@ -14,14 +14,14 @@ export const BookAdd = (p: RouteComponentProps<{ id: string }>) => {
 
     useEffectAsync(async () => {
         if (p.match.params.id) {
-           // const book = await getSingleBook(p.match.params.id);
-           /* setInitialValues({
+            const book = await getSingleBook(p.match.params.id);
+            setInitialValues({
                 title: book.title,
                 author: book.author,
                 genre: book.genre,
                 description: book.description,
                 cover: book.cover
-            });*/
+            });
         } else {
             setInitialValues({
                 title: "",
@@ -43,10 +43,10 @@ export const BookAdd = (p: RouteComponentProps<{ id: string }>) => {
 
     const onSubmit = async (payload: BookForm) => {
         if (p.match.params.id) {
-            //await putBook(payload,p.match.params.id)
+            await putBook(payload,p.match.params.id)
         } else {
             console.log(payload)
-            //await postBook(payload);
+            await postBook(payload);
         }
         routeTo(urls.adminPanel);
     }
