@@ -6,6 +6,10 @@ export const urls = {
     loginPage: () => "/app/start/login",
     registerPage: () => "/app/start/register",
     contentPage: () => "/app/content",
+    adminPanel: () => "/admin",
+    addBook: () => "/admin/add",
+    editBook: (p: {id: string}) => `/admin/edit/${p.id}`,
+    bookPage: (p: {id: string}) => `/app/content/${p.id}`
 };
 
 export const startUrl = urls.loginPage;
