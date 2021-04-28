@@ -21,5 +21,6 @@ export const Content = () => {
 
     return (<div className={classes.root}>
         <NavBar />
+        <ScrollList />
     </div>)
 }
