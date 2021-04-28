@@ -5,20 +5,25 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon dist/server.js",
+    "start-dev": "nodemon src/server.ts",
     "watch": "tsc -p tsconfig.json --watch",
-    "dev": "concurrently --kill-others \"npm run watch\" \"npm run start\"",
+    "dev": "concurrently --kill-others \"npm run watch\" \"npm run start-dev\"",
     "build": "tsc -p tsconfig.json"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.12.0"
+    "mongoose": "^5.12.0",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.10",
     "@types/express": "^4.17.11",
     "@types/mongoose": "^5.10.3",
+    "@types/morgan": "^1.9.2",
     "@types/node": "^14.14.31",
     "nodemon": "^2.0.7",
     "ts-node": "^9.1.1",
