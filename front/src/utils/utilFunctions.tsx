@@ -7,3 +7,15 @@ export function useTitle(appTitle: string) {
     }, [title]);
     return setTitle;
 }
+
+export async function fetchAndParse<T>(input: RequestInfo,init: RequestInit): Promise<T>{
+  
+    const result = await fetch(input,init);
+
+    try {
+        const data = await result.json();
+        return data as T;
+      } catch (e) {
+        return (result as unknown) as T;
+      }
+}

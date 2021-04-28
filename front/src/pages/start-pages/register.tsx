@@ -56,10 +56,10 @@ export const SignUpModal = () => {
 
 
   const onSubmit = async (credentials: RegisterForm) => {
-
+    
   }
 
-  (<Formik initialValues={initialValues} onSubmit={onSubmit}>
+  return (<Formik initialValues={initialValues} onSubmit={onSubmit}>
     {({ handleChange }) => {
       return (
         <Grid item xs={12} component={Paper} elevation={6} square>
@@ -152,4 +152,4 @@ export const SignUpModal = () => {
     }}
   </Formik>
   );
-};
+}
