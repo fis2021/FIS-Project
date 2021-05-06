@@ -5,7 +5,7 @@ import config from './config';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import cors from 'cors';
-
+import * as bodyParser from 'body-parser';
 
 const app: Application = express();
 
@@ -23,6 +23,7 @@ app.use(function (req: Request, res: Response, next) {
     next();
 });
 
+app.use(bodyParser.json());
 app.use(morgan('tiny'));
 app.use(express.urlencoded({extended: true}));
 app.use(cors());
