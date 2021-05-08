@@ -10,6 +10,7 @@ export const AdminLanding = () => {
 
             <Button variant="outlined" onClick={() => routeTo(urls.addBook)}>Add a new Book</Button>
             <Button variant="outlined" onClick={() => routeTo(urls.contentPage)}>Back to content page</Button>
+            <Button variant="outlined" onClick={() => routeTo(urls.addAdminAccount)}>Create admin account</Button>
         </div>
     )
 }
