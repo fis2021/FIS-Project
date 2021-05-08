@@ -5,6 +5,9 @@ import { RouteComponentProps } from 'react-router-dom'
 import { useEffectAsync } from '../../hooks/async-hooks';
 import { urls, useRouting } from '../../routing/routes';
 import { getSingleBook, postBook, putBook } from '../../services/book-service';
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import { BookPayload } from '../../models/book-payload';
+import { uploadImage } from '../../services/image-service';
 
 
 export const BookAdd = (p: RouteComponentProps<{ id: string }>) => {
@@ -20,7 +23,7 @@ export const BookAdd = (p: RouteComponentProps<{ id: string }>) => {
                 author: book.author,
                 genre: book.genre,
                 description: book.description,
-                cover: book.cover
+                coverUrl: book.coverUrl,
             });
         } else {
             setInitialValues({
@@ -28,25 +31,35 @@ export const BookAdd = (p: RouteComponentProps<{ id: string }>) => {
                 author: "",
                 genre: "",
                 description: "",
-                cover: ""
+                coverUrl: "",
+                file: null
             })
         }
-    },[]);
+    }, []);
 
     type BookForm = {
         title: string;
         author?: string;
         genre: string;
         description: string;
-        cover?: string;
+        coverUrl?: string;
+        file?: File | null;
     }
 
     const onSubmit = async (payload: BookForm) => {
+        const { file, ...bookPayload } = payload;
         if (p.match.params.id) {
-            await putBook(payload,p.match.params.id)
+            // if (file) {
+            //     bookPayload.coverUrl = await uploadImage(bookPayload.title ,bookPayload.file);
+            // }
+            bookPayload.coverUrl = "";
+            await putBook(bookPayload, p.match.params.id)
         } else {
-            console.log(payload)
-            await postBook(payload);
+            // if (file) {
+            //     bookPayload.coverUrl = await uploadImage(bookPayload.title ,bookPayload.file);
+            // }
+            bookPayload.coverUrl = "";
+            await postBook(bookPayload);
         }
         routeTo(urls.adminPanel);
     }
@@ -61,7 +74,16 @@ export const BookAdd = (p: RouteComponentProps<{ id: string }>) => {
                     initialValues={initialValues}
                     onSubmit={onSubmit}
                 >
-                    {({ values, handleChange }) => {
+                    {({ values, handleChange, setValues }) => {
+
+                        const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+                            if (event.target.files) {
+                                const file = event.target.files[0];
+                                const picture = URL.createObjectURL(file);
+                                setValues({ ...values, coverUrl: picture, file: file })
+                            }
+                        }
+
                         return (
                             <Form>
                                 <Grid container spacing={3}>
@@ -130,6 +152,20 @@ export const BookAdd = (p: RouteComponentProps<{ id: string }>) => {
                                             onChange={handleChange}
                                         />
                                     </Grid>
+                                    <input
+                                        id="button-file"
+                                        type="file"
+                                        onChange={handleImageUpload}
+                                        style={{ display: "none" }}
+                                    />
+                                    <label htmlFor="button-file">
+                                        <Button variant="contained" component="span">
+                                            File Upload <CloudUploadIcon style={{ paddingLeft: "0.2em" }} />
+                                        </Button>
+                                    </label>
+                                    <div >
+                                        <img alt="" src={values.coverUrl} width="400px" height="auto" />
+                                    </div>
                                 </Grid>
                             </Form>
                         )
