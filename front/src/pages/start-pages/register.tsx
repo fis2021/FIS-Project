@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Checkbox, FormControlLabel, Grid, Link, makeStyles, Paper, TextField, Typography } from "@material-ui/core";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
-import { Formik } from 'formik';
+import { Form, Formik } from 'formik';
+import { userRegister } from '../../services/auth-service';
+import { urls, useRouting } from '../../routing/routes';
 
 function Copyright() {
   return (
@@ -20,8 +22,7 @@ function Copyright() {
 export type RegisterForm = {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
+  isAdmin: boolean;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -45,54 +46,37 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const SignUpModal = () => {
+
   const classes = useStyles();
+  const { routeTo } = useRouting();
+  const [error, setError] = useState<string>("");
 
   const initialValues = {
     email: "",
     password: "",
-    firstName: "",
-    lastName: "",
+    isAdmin: false
   };
 
-
   const onSubmit = async (credentials: RegisterForm) => {
-    
+    try{
+    const result = await userRegister(credentials);
+    routeTo(urls.loginPage)
+    }catch(e){
+      setError(e.statusText);
+    }
   }
 
   return (<Formik initialValues={initialValues} onSubmit={onSubmit}>
-    {({ handleChange }) => {
+    {({ handleChange, values }) => {
       return (
         <Grid item xs={12} component={Paper} elevation={6} square>
           <CssBaseline />
           <div className={classes.paper}>
             <Typography component="h1" variant="h5">
               Sign up
-        </Typography>
-            <form className={classes.form} noValidate>
+            </Typography>
+            <Form className={classes.form} noValidate>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    autoComplete="fname"
-                    name="firstName"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="firstName"
-                    label="First Name"
-                    autoFocus
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="lastName"
-                    label="Last Name"
-                    name="lastName"
-                    autoComplete="lname"
-                  />
-                </Grid>
                 <Grid item xs={12}>
                   <TextField
                     variant="outlined"
@@ -102,6 +86,7 @@ export const SignUpModal = () => {
                     id="email"
                     label="Email Address"
                     name="email"
+                    value={values.email}
                     autoFocus
                     onChange={handleChange}
                   />
@@ -115,6 +100,7 @@ export const SignUpModal = () => {
                     name="password"
                     label="Password"
                     type="password"
+                    value={values.password}
                     id="password"
                     onChange={handleChange}
                   />
@@ -126,6 +112,13 @@ export const SignUpModal = () => {
                   />
                 </Grid>
               </Grid>
+              {error ? (
+                        <div>
+                            <p>Email already in use</p>
+                        </div>
+                    ) : (
+                            <div />
+                        )}
               <Button
                 type="submit"
                 fullWidth
@@ -142,7 +135,7 @@ export const SignUpModal = () => {
               </Link>
                 </Grid>
               </Grid>
-            </form>
+            </Form>
           </div>
           <Box mt={5}>
             <Copyright />

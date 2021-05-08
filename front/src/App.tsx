@@ -9,6 +9,7 @@ import { LandingPage } from "./pages/start-pages/landing-page";
 import { AdminLanding } from "./pages/admin-panel/hello-admin";
 import { BookAdd } from "./pages/admin-panel/edit-post-book";
 import { BookPage } from "./components/single-book-page";
+import { AdminAdd } from "./pages/admin-panel/admin-add";
 
 const theme = createMuiTheme({
   palette: {
@@ -48,6 +49,11 @@ function App() {
           exact
           path={route(urls.editBook, ["id"])}
           component={BookAdd}
+        />
+         <Route
+          exact
+          path={route(urls.addAdminAccount)}
+          component={AdminAdd}
         />
         <Route
           exact
