@@ -11,6 +11,7 @@ import { BookAdd } from "./pages/admin-panel/edit-post-book";
 import { BookPage } from "./components/single-book-page";
 import { AdminAdd } from "./pages/admin-panel/admin-add";
 import { UserContextProvider } from "./contexts/userContext";
+import { SearchContextProvider } from "./contexts/searchContext";
 
 const theme = createMuiTheme({
   palette: {
@@ -26,46 +27,48 @@ function App() {
   return (
     <div className="App">
       <UserContextProvider>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Route
-          path={route(urls.startPage, ["route"])}
-          component={LandingPage}
-        />
-        <Route
-          exact
-          path={route(urls.contentPage)}
-          component={Content}
-        />
-        <Route
-          exact
-          path={route(urls.adminPanel)}
-          component={AdminLanding}
-        />
-        <Route
-          exact
-          path={route(urls.addBook)}
-          component={BookAdd}
-        />
-        <Route
-          exact
-          path={route(urls.editBook, ["id"])}
-          component={BookAdd}
-        />
-        <Route
-          exact
-          path={route(urls.addAdminAccount)}
-          component={AdminAdd}
-        />
-        <Route
-          exact
-          path={route(urls.bookPage, ["id"])}
-          component={BookPage}
-        />
-        <Route exact path="/">
-          <Redirect to={startUrl()} />
-        </Route>
-      </ThemeProvider>
+        <SearchContextProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Route
+              path={route(urls.startPage, ["route"])}
+              component={LandingPage}
+            />
+            <Route
+              exact
+              path={route(urls.contentPage)}
+              component={Content}
+            />
+            <Route
+              exact
+              path={route(urls.adminPanel)}
+              component={AdminLanding}
+            />
+            <Route
+              exact
+              path={route(urls.addBook)}
+              component={BookAdd}
+            />
+            <Route
+              exact
+              path={route(urls.editBook, ["id"])}
+              component={BookAdd}
+            />
+            <Route
+              exact
+              path={route(urls.addAdminAccount)}
+              component={AdminAdd}
+            />
+            <Route
+              exact
+              path={route(urls.bookPage, ["id"])}
+              component={BookPage}
+            />
+            <Route exact path="/">
+              <Redirect to={startUrl()} />
+            </Route>
+          </ThemeProvider>
+        </SearchContextProvider>
       </UserContextProvider>
     </div>
   );
