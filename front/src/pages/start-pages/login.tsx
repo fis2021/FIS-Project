@@ -1,7 +1,10 @@
 import { Box, Button, Checkbox, FormControlLabel, Grid, Link, makeStyles, Paper, TextField, Typography } from "@material-ui/core";
 import { Form, Formik } from "formik";
-import React from "react";
+import React, { useContext, useState } from "react";
+import { UserContext } from "../../contexts/userContext";
 import { urls, useRouting } from "../../routing/routes";
+import { userLogin } from "../../services/auth-service";
+import { headers } from "../../services/config";
 
 function Copyright() {
     return (
@@ -42,9 +45,11 @@ export type LoginForm = {
 };
 
 export const LoginModal = () => {
-    const classes = useStyles();
 
-    const {routeTo} = useRouting();
+    const classes = useStyles();
+    const { routeTo } = useRouting();
+    const [error, setError] = useState<string>("");
+    const [, setUserContext] = useContext(UserContext);
 
     const initialValues = {
         email: "",
@@ -52,11 +57,21 @@ export const LoginModal = () => {
     };
 
     const onSubmit = async (credentials: LoginForm) => {
-
+        try {
+            const user = await userLogin(credentials);
+            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("isAdmin", user.isAdmin);
+            setUserContext(user);
+            headers.Authorization = `Bearer ${user.token}`;
+            routeTo(urls.contentPage);
+        } catch (e) {
+            setError(e.statusText);
+        }
     }
 
     return (<Formik initialValues={initialValues} onSubmit={onSubmit}>
-        {({ handleChange }) => {
+        {({ handleChange, values }) => {
+
             return (
                 <Grid item xs={12} component={Paper} elevation={6} square>
                     <div className={classes.paper}>
@@ -73,6 +88,7 @@ export const LoginModal = () => {
                                 label="Email Address"
                                 name="email"
                                 autoFocus
+                                value={values.email}
                                 onChange={handleChange}
                             />
                             <TextField
@@ -84,15 +100,22 @@ export const LoginModal = () => {
                                 label="Password"
                                 type="password"
                                 id="password"
+                                value={values.password}
                                 onChange={handleChange}
                             />
+                            {error ? (
+                                <div>
+                                    <p>Invalid Email or Password</p>
+                                </div>
+                            ) : (
+                                <div />
+                            )}
                             <Button
                                 type="submit"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
                                 className={classes.submit}
-                                onClick={() => routeTo(urls.contentPage)}
                             >
                                 Sign In
                             </Button>

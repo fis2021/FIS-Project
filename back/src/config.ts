@@ -12,6 +12,8 @@ const MONGO_OPTIONS = {
     retryWrites: false
 };
 
+const SECRET_KEY = "fis-app-secret";
+
 const MONGO_USERNAME = process.env.MONGO_USERNAME || 'fisProject';
 const MONGO_PASSWORD = process.env.MONGO_USERNAME || 'fis2021';
 const MONGO_HOST = process.env.MONGO_URL || `first-cluster.qbi2c.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
@@ -34,7 +36,8 @@ const SERVER = {
 
 const config = {
     mongo: MONGO,
-    server: SERVER
+    server: SERVER,
+    secret: SECRET_KEY
 };
 
 export default config;

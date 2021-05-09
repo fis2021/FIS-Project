@@ -8,6 +8,7 @@ export const urls = {
     contentPage: () => "/app/content",
     adminPanel: () => "/admin",
     addBook: () => "/admin/add",
+    addAdminAccount: () => "/admin/addAccount",
     editBook: (p: {id: string}) => `/admin/edit/${p.id}`,
     bookPage: (p: {id: string}) => `/app/content/${p.id}`
 };

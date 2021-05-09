@@ -5,7 +5,8 @@ import config from './config';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import cors from 'cors';
-
+import * as bodyParser from 'body-parser';
+import { userRouter } from './routes/user-routes';
 
 const app: Application = express();
 
@@ -23,13 +24,14 @@ app.use(function (req: Request, res: Response, next) {
     next();
 });
 
+app.use(bodyParser.json());
 app.use(morgan('tiny'));
 app.use(express.urlencoded({extended: true}));
 app.use(cors());
 
 
 app.use('/api',bookRouter);
-
+app.use('/api',userRouter);
 
 
 app.listen(config.server.port, () => logging.info(NAMESPACE, `Server running on ${config.server.hostname}:${config.server.port}`))
