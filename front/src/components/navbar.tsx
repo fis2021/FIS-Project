@@ -40,6 +40,7 @@ export const NavBar = () => {
 
     const handleLogOut = () => {
         localStorage.removeItem("user");
+        localStorage.removeItem("isAdmin");
         headers.Authorization = "";
         routeTo(urls.loginPage)
     }
@@ -47,21 +48,21 @@ export const NavBar = () => {
     return <AppBar position="fixed">
         <Toolbar>
             <Link href="/app/content">
-                    <IconButton edge="start">
-                        <MenuBookIcon className={classes.menuLogo}>
-                        </MenuBookIcon>
-                        <Typography variant="h6" className={classes.title}>
-                            Book Club
+                <IconButton edge="start">
+                    <MenuBookIcon className={classes.menuLogo}>
+                    </MenuBookIcon>
+                    <Typography variant="h6" className={classes.title}>
+                        Book Club
                 </Typography>
-                    </IconButton>
+                </IconButton>
             </Link>
             <div style={{ flexGrow: 1 }}>
             </div>
-            <Tooltip title="My Profile" style={{color: 'white'}}>
-            <IconButton onClick={handleClick} aria-controls="profile-dropwdown" edge="end">
-                <AccountCircleIcon className={classes.menuButton}>
-                </AccountCircleIcon>
-            </IconButton>
+            <Tooltip title="My Profile" style={{ color: 'white' }}>
+                <IconButton onClick={handleClick} aria-controls="profile-dropwdown" edge="end">
+                    <AccountCircleIcon className={classes.menuButton}>
+                    </AccountCircleIcon>
+                </IconButton>
             </Tooltip>
             <Menu
                 id="profile-dropdown"
@@ -72,13 +73,14 @@ export const NavBar = () => {
                 <MenuItem onClick={handleClose}>
                     <Typography>Favorites</Typography>
                 </MenuItem>
-                <MenuItem onClick={() => routeTo(urls.adminPanel)}>
-                    <Typography>Admin Panel</Typography>
-                </MenuItem>
+                {localStorage.getItem("isAdmin") === "false" ? null!
+                    : < MenuItem onClick={() => routeTo(urls.adminPanel)}>
+                        <Typography>Admin Panel</Typography>
+                    </MenuItem>}
                 <MenuItem onClick={handleLogOut}>
                     <Typography>Log Out</Typography>
                 </MenuItem>
             </Menu>
         </Toolbar>
-    </AppBar>
+    </AppBar >
 }

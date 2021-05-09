@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const DisplayBook = (p: { book: Book , setReload: React.Dispatch<React.SetStateAction<boolean>>, reload: boolean}) => {
+const DisplayBook = (p: { book: Book, setReload: React.Dispatch<React.SetStateAction<boolean>>, reload: boolean }) => {
 
     const { routeTo } = useRouting();
     const classes = useStyles();
@@ -54,16 +54,16 @@ const DisplayBook = (p: { book: Book , setReload: React.Dispatch<React.SetStateA
                     <Button size="small" color="primary" onClick={() => routeTo(urls.bookPage, { id: p.book._id })}>
                         More Details
                 </Button>
-                    <IconButton onClick={async () => {
+                    {localStorage.getItem("isAdmin") === "true" ? <><IconButton onClick={async () => {
                         const confirmation = window.confirm("Are you sure you want to delete the selected items?");
                         if (confirmation) {
                             await deleteBook(p.book._id)
                         }
                         p.setReload(!p.reload);
                     }}><Icon>delete</Icon></IconButton>
-                    <IconButton onClick={() => routeTo(urls.editBook,{id: p.book._id})}>
-                        <Icon>edit</Icon>
-                    </IconButton>
+                        <IconButton onClick={() => routeTo(urls.editBook, { id: p.book._id })}>
+                            <Icon>edit</Icon>
+                        </IconButton></> : <></>}
                 </CardActions>
             </Card >
         </Grid>
@@ -84,7 +84,7 @@ export const ScrollList = () => {
         <div className={classes.paper}>
             <Grid container spacing={3}>
                 {data?.map((book) => <div key={book._id} style={{ padding: "50px" }}>
-                    <DisplayBook book={book} setReload={setReload}  reload={reload}/>
+                    <DisplayBook book={book} setReload={setReload} reload={reload} />
                 </div>
                 )}
             </Grid>
