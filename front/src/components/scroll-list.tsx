@@ -1,11 +1,12 @@
 import classes from '*.module.css';
-import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Grid, Icon, IconButton } from '@material-ui/core';
+import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, CircularProgress, Container, Grid, Icon, IconButton } from '@material-ui/core';
 import { makeStyles, Paper, Typography } from '@material-ui/core';
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { SearchContext } from '../contexts/searchContext';
 import { useData } from '../hooks/useData';
 import { Book } from '../models/book';
 import { urls, useRouting } from '../routing/routes';
-import { deleteBook, getAllBooks } from '../services/book-service';
+import { deleteBook, getAllBooks, getBooksBySearch } from '../services/book-service';
 
 const useStyles = makeStyles((theme) => ({
     scrollRoot: {
@@ -73,9 +74,13 @@ const DisplayBook = (p: { book: Book, setReload: React.Dispatch<React.SetStateAc
 export const ScrollList = () => {
 
     const [reload, setReload] = useState(false);
-    const { data, isLoading } = useData(getAllBooks, [reload]);
-    console.log(data)
+    const [searchWord,] = useContext(SearchContext);
+    const { data, isLoading } = useData((searchWord ? getBooksBySearch : getAllBooks), [reload], (searchWord ? searchWord : undefined));
     const classes = useStyles();
+
+   useEffect(() =>{
+        setReload(!reload);
+   },[searchWord])
 
     if (isLoading) {
         return <div></div>;

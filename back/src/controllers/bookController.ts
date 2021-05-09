@@ -19,6 +19,19 @@ export const getSingleBook = async (req: Request, res: Response): Promise<Respon
     }
 }
 
+export const getBooksByName = async (req: Request, res: Response): Promise<Response> => {
+    try{
+
+        const regex = new RegExp(req.params.query, 'i');
+        const result = await Book.find({title: {$regex: regex}});
+
+        return res.status(200).json(result); 
+    }catch(err){
+
+        return res.status(404).json(err);
+    }
+}
+
 export const uploadBook = async (req: Request, res: Response): Promise<Response> =>{
     try{
         console.log(req.body)

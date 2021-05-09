@@ -1,4 +1,3 @@
-import { BinaryOperatorToken } from "typescript";
 import { Book } from "../models/book";
 import { BookPayload } from "../models/book-payload";
 import { fetchAndParse } from "../utils/utilFunctions";
@@ -12,6 +11,11 @@ export function getAllBooks(): Promise<Book[]>{
 export function getSingleBook(id: string): Promise<Book>{
     const url = baseUrl + `/api/books/${id}`;
     return fetchAndParse<Book>(url, {method: "GET", headers});
+}
+
+export function getBooksBySearch(param?: string): Promise<Book[]>{
+    const url = baseUrl + `/api/search/${param}`;
+    return fetchAndParse<Book[]>(url, {method: "GET", headers});
 }
 
 export function deleteBook(id: string): Promise<any>{
