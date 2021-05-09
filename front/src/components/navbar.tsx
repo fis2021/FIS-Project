@@ -5,6 +5,7 @@ import MenuBookIcon from '@material-ui/icons/MenuBook';
 import { Typography } from '@material-ui/core';
 import { MenuItem } from '@material-ui/core';
 import { urls, useRouting } from '../routing/routes';
+import { headers } from '../services/config';
 
 const useStyles = makeStyles((theme) => ({
     menuButton: {
@@ -37,6 +38,12 @@ export const NavBar = () => {
         setAnchorEl(null);
     };
 
+    const handleLogOut = () => {
+        localStorage.removeItem("user");
+        headers.Authorization = "";
+        routeTo(urls.loginPage)
+    }
+
     return <AppBar position="fixed">
         <Toolbar>
             <Link href="/app/content">
@@ -68,7 +75,7 @@ export const NavBar = () => {
                 <MenuItem onClick={() => routeTo(urls.adminPanel)}>
                     <Typography>Admin Panel</Typography>
                 </MenuItem>
-                <MenuItem onClick={() => routeTo(urls.loginPage)}>
+                <MenuItem onClick={handleLogOut}>
                     <Typography>Log Out</Typography>
                 </MenuItem>
             </Menu>

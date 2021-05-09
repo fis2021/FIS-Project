@@ -1,6 +1,8 @@
 import { Response, Request } from "express";
 import User from "../models/User";
 import bcrypt from "bcryptjs";
+import config from "../config";
+import jwt from 'jsonwebtoken';
 
 export type Credentials = {
     email: string,
@@ -9,17 +11,41 @@ export type Credentials = {
 
 export const userLogin = async (req: Request, res: Response): Promise<any> => {
     const result = await User.findOne({ email: req.body.email }).exec();
-    if(!result){
+
+    if (!result) {
         return res.status(400).json({ emailnotfound: "Email not found" });
     }
 
-    const isValidPassword = await bcrypt.compare(req.body.password, Object.values(result)[Object.values(result).length -2].password);
+    const isValidPassword = await bcrypt.compare(
+        req.body.password,
+        Object.values(result)[Object.values(result).length - 2].password
+    );
 
-    if(isValidPassword){
-        res.status(200).json({message: "Logged in"});
-    }else{
-        res.status(400).json({message: "Nu i bine"});
+    if (!isValidPassword) {
+        return res.status(401).send({
+            accessToken: null,
+            message: "Invalid Password!",
+        });
     }
+
+    const token = jwt.sign(
+        {
+            email: req.body.email,
+            password: req.body.password,
+            isAdmin: Object.values(result)[Object.values(result).length - 2].isAdmin
+        },
+        config.secret,
+        {
+            expiresIn: 3600,
+        }
+    );
+
+    res.status(200).json({
+        email: req.body.email,
+        password: req.body.password,
+        isAdmin: Object.values(result)[Object.values(result).length - 2].isAdmin,
+        accessToken: token,
+    });
 
 };
 

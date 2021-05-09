@@ -10,6 +10,7 @@ import { AdminLanding } from "./pages/admin-panel/hello-admin";
 import { BookAdd } from "./pages/admin-panel/edit-post-book";
 import { BookPage } from "./components/single-book-page";
 import { AdminAdd } from "./pages/admin-panel/admin-add";
+import { UserContextProvider } from "./contexts/userContext";
 
 const theme = createMuiTheme({
   palette: {
@@ -24,6 +25,7 @@ function App() {
   useTitle("FIS Project");
   return (
     <div className="App">
+      <UserContextProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Route
@@ -50,7 +52,7 @@ function App() {
           path={route(urls.editBook, ["id"])}
           component={BookAdd}
         />
-         <Route
+        <Route
           exact
           path={route(urls.addAdminAccount)}
           component={AdminAdd}
@@ -64,6 +66,7 @@ function App() {
           <Redirect to={startUrl()} />
         </Route>
       </ThemeProvider>
+      </UserContextProvider>
     </div>
   );
 }

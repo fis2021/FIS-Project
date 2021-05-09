@@ -1,8 +1,10 @@
 import { Box, Button, Checkbox, FormControlLabel, Grid, Link, makeStyles, Paper, TextField, Typography } from "@material-ui/core";
 import { Form, Formik } from "formik";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { UserContext } from "../../contexts/userContext";
 import { urls, useRouting } from "../../routing/routes";
 import { userLogin } from "../../services/auth-service";
+import { headers } from "../../services/config";
 
 function Copyright() {
     return (
@@ -47,6 +49,7 @@ export const LoginModal = () => {
     const classes = useStyles();
     const { routeTo } = useRouting();
     const [error, setError] = useState<string>("");
+    const [, setUserContext] = useContext(UserContext);
 
     const initialValues = {
         email: "",
@@ -55,7 +58,11 @@ export const LoginModal = () => {
 
     const onSubmit = async (credentials: LoginForm) => {
         try {
-            const result = await userLogin(credentials);
+            const user = await userLogin(credentials);
+            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("isAdmin", user.isAdmin);
+            setUserContext(user);
+            headers.Authorization = `Bearer ${user.token}`;
             routeTo(urls.contentPage);
         } catch (e) {
             setError(e.statusText);

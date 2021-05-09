@@ -9,6 +9,11 @@ export function userLogin(body: UserInfo): Promise<any>{
     return fetchAndParse<any>(url, {method: "POST",body: JSON.stringify(body), headers})
 }
 
+export function verifyToken(): Promise<any>{
+    const url = baseUrl + '/api/verifyToken';
+    return fetchAndParse<any>(url, {method: "POST", headers});
+}
+
 export function userRegister(body: User): Promise<any>{
     const url = baseUrl + '/api/register';
     return fetchAndParse<any>(url, {method: "POST",body: JSON.stringify(body), headers})
