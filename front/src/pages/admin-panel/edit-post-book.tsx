@@ -1,4 +1,4 @@
-import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core'
+import { Button, Grid, makeStyles, Paper, TextField, Typography } from '@material-ui/core'
 import { Form, Formik } from 'formik';
 import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
@@ -7,10 +7,35 @@ import { urls, useRouting } from '../../routing/routes';
 import { getSingleBook, postBook, putBook } from '../../services/book-service';
 
 
+const useStyles = makeStyles((theme) => ({
+    root: {
+        height: '100vh',
+        backgroundImage: `url(${process.env.PUBLIC_URL + "/assets/admin-background.jpg"})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+    },
+    paper: {
+        padding: theme.spacing(3),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        maxWidth: '500px'
+    },
+    form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(1),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
+}));
+
 export const BookAdd = (p: RouteComponentProps<{ id: string }>) => {
 
     const [initialValues, setInitialValues] = useState<BookForm>();
     const { routeTo } = useRouting();
+    const classes = useStyles();
 
     useEffectAsync(async () => {
         if (p.match.params.id) {
@@ -55,8 +80,8 @@ export const BookAdd = (p: RouteComponentProps<{ id: string }>) => {
         return <div></div>;
     }
     return (
-        <div>
-            <Paper variant="outlined">
+        <div className={classes.root}>
+            <Paper className={classes.paper}>
                 <Formik<BookForm>
                     initialValues={initialValues}
                     onSubmit={onSubmit}
