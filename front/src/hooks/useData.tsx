@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useEffectAsync } from './async-hooks';
 
 
-export function useData<T>(dataLoader: (param?: string) => Promise<T>, deps:  any[] = [], param?: string) {
+export function useData<T>(dataLoader: (param?: any) => Promise<T>, deps:  any[] = [], param?: any) {
 
   const [data, setData] = useState<T>();
   const [error, setError] = useState<string>();

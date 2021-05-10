@@ -87,6 +87,7 @@ export const NavBar = () => {
 
     const handleKeyPress = (e: any) => {
         if(e.keyCode === 13){
+            routeTo(urls.contentPage);
             setSearchWord(searchText);
         }
     }
