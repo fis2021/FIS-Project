@@ -49,6 +49,21 @@ export const userLogin = async (req: Request, res: Response): Promise<any> => {
 
 };
 
+export const getCurrentUser = async (
+    req: Request,
+    res: Response
+): Promise<Response> => {
+    try{
+        const result = await User.findOne({email: req.params.email})
+        
+        return res.status(200).json(result);
+    }catch(err){
+
+        return res.status(404).json(err);
+    }
+}
+
+
 export const userRegister = async (req: Request, res: Response): Promise<Response> => {
 
     const result = await User.findOne({ email: req.body.email });
