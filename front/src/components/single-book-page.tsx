@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { Button, Container, Divider, makeStyles, Paper, TextareaAutosize, Typography } from '@material-ui/core'
 import { Form, Formik } from 'formik'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { useEffectAsync } from '../hooks/async-hooks'
 import { useData } from '../hooks/useData'
@@ -10,7 +10,12 @@ import { Review } from '../models/review'
 import { ReviewPayload } from '../models/review-payload'
 import { getSingleBook } from '../services/book-service'
 import { getReviews, uploadReview } from '../services/review-service'
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import StarIcon from '@material-ui/icons/Star';
 import { NavBar } from './navbar'
+import { UserContext } from '../contexts/userContext'
+import { addToFavorites, removeFromFavorites } from '../services/favorites-service'
+import { getCurrentUser } from '../services/auth-service'
 
 const useStyles = makeStyles((theme) => ({
     rootPaper: {
@@ -59,6 +64,7 @@ export const BookPage = (p: RouteComponentProps<{ id: string }>) => {
 
     const [reload, setReload] = useState(false);
     const [book, setBook] = useState<Book>();
+    const [user, , favorites] = useContext(UserContext);
     const classes = useStyles();
 
     useEffectAsync(async () => {
@@ -72,21 +78,46 @@ export const BookPage = (p: RouteComponentProps<{ id: string }>) => {
         bookId: p.match.params.id,
     }
 
+
     const { data: reviews, isLoading } = useData(getReviews, [reload], p.match.params.id)
 
     const onSubmit = async (payload: ReviewPayload) => {
 
         const date = new Date();
         payload.date = date.getDate() + "." + date.getMonth() + "." + date.getFullYear();
-        console.log(payload.date)
         try {
             const result = await uploadReview(payload);
-            console.log(result);
             if (result) {
                 setReload(!reload);
             }
         } catch (e) {
             console.log(e);
+        }
+    }
+
+    const isFavorite = (): boolean => {
+        if (favorites) {
+            if (favorites.filter((bookId) => bookId === p.match.params.id).length > 0) {
+                return true;
+            }
+        }
+        return false
+    }
+
+    const handleClick = async () => {
+        if (favorites) {
+            if (favorites.filter((id) => id === p.match.params.id)!.length > 0) {
+                console.log("remove")
+                await removeFromFavorites({ email: user.email, bookId: p.match.params.id });
+                window.location.reload();
+            } else {
+                console.log("add")
+                window.location.reload();
+                await addToFavorites({ email: user.email, bookId: p.match.params.id });
+
+            }
+        } else {
+            await addToFavorites({ email: user.email, bookId: p.match.params.id });
         }
     }
 
@@ -104,6 +135,11 @@ export const BookPage = (p: RouteComponentProps<{ id: string }>) => {
                                 src="https://picsum.photos/400/600"
                             />
                         </Container>
+                        <div>
+                            <Button onClick={handleClick}>
+                                {isFavorite() ? <StarIcon color="secondary" /> : <StarBorderIcon color="secondary" />}
+                            </Button>
+                        </div>
                         <Container>
                             <Typography variant="h2">{book.title}</Typography>
                             <Typography variant="h5" style={{ textAlign: "end" }}>{book.author}</Typography>

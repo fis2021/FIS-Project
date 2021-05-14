@@ -12,6 +12,7 @@ import { BookPage } from "./components/single-book-page";
 import { AdminAdd } from "./pages/admin-panel/admin-add";
 import { UserContextProvider } from "./contexts/userContext";
 import { SearchContextProvider } from "./contexts/searchContext";
+import { FavoritesPage } from "./pages/favorites-page";
 
 const theme = createMuiTheme({
   palette: {
@@ -63,6 +64,11 @@ function App() {
               exact
               path={route(urls.bookPage, ["id"])}
               component={BookPage}
+            />
+            <Route
+              exact
+              path={route(urls.favoritesPage)}
+              component={FavoritesPage}
             />
             <Route exact path="/">
               <Redirect to={startUrl()} />
