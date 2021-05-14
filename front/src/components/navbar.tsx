@@ -133,7 +133,7 @@ export const NavBar = () => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={() => routeTo(urls.favoritesPage)}>
                     <Typography>Favorites</Typography>
                 </MenuItem>
                 {localStorage.getItem("isAdmin") === "false" ? null!
