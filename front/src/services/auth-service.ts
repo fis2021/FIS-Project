@@ -24,3 +24,9 @@ export function adminRegister(body: User): Promise<any>{
     return fetchAndParse<any>(url, {method: "POST",body: JSON.stringify(body), headers})
 }
 
+export function getCurrentUser(email: string): Promise<any>{
+    const url = baseUrl + `/api/current-user/${email}`;
+    return fetchAndParse<any>(url, {method: "POST", headers})
+}
+
+

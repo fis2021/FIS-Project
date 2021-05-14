@@ -11,7 +11,7 @@ export const urls = {
     addAdminAccount: () => "/admin/addAccount",
     editBook: (p: {id: string}) => `/admin/edit/${p.id}`,
     bookPage: (p: {id: string}) => `/app/content/${p.id}`,
-    favoritesPage: () => '/app/content/favorites',
+    favoritesPage: () => '/app/favorites',
 };
 
 export const startUrl = urls.loginPage;

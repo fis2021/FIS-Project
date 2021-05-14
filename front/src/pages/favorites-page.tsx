@@ -1,6 +1,10 @@
 import { Button, Divider, makeStyles, Paper, Typography } from "@material-ui/core"
-import React from "react"
+import React, { useContext, useState } from "react"
 import { NavBar } from "../components/navbar"
+import { UserContext } from "../contexts/userContext"
+import { useEffectAsync } from "../hooks/async-hooks"
+import { Book } from "../models/book"
+import { getSingleBook } from "../services/book-service"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,28 +40,57 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const test = ["Titluri pentru", "Titluri pentru test", "Titluri pentru test", "Titluri pentru test", "Titluri pentru test", "Titluri pentru test"]
+const DisplayTitle = (p: {book: Book}) => {
+    const classes = useStyles();
+    console.log("inca unul")
+    return(
+        (<>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+                <Typography variant="h5" style={{ padding: "10px" }}>
+                    {p.book.title}
+                </Typography>
+                <p>by</p>
+                <Typography variant="h5" style={{ padding: "10px" }}>
+                    {p.book.author}
+                </Typography>
+            </div>
+            <Divider className={classes.divider} />
+        </>)
+    )
+}
 
 export const FavoritesPage = () => {
     const classes = useStyles();
-    return (
-        <div className={classes.root}>
-            <NavBar />
-            <Paper className={classes.paper}>
-                <Paper className={classes.titleContainer}>
-                    {test.map((title) => {
-                        return (<>
-                            <Typography variant="h5" style={{ padding: "10px" }}>
-                                {title}
-                            </Typography>
-                            <Divider className={classes.divider} />
-                        </>)
-                    })}
-                    <Button onClick={() => { }} style={{ color: "white", marginTop: "20px" }} variant="outlined">
-                        Show live articles
+    const [books,setBooks] = useState<Book[]>([]);
+    const [loading,isLoading] = useState(true);
+    const [, , favorites] = useContext(UserContext);
+
+    useEffectAsync(async () => {
+        if (favorites) {
+            await Promise.all(favorites.map(async (id) => {
+                const book = await getSingleBook(id);
+                setBooks(books => [...books,book])
+            }))
+            isLoading(!loading);
+        }
+
+    },[])
+    if(loading){
+        return <div></div>
+    }else
+        return (
+            <div className={classes.root}>
+                <NavBar />
+                <Paper className={classes.paper}>
+                    <Paper className={classes.titleContainer}>
+                        {books.map((book,index) => {
+                          return <DisplayTitle  book={book} key={index}/>
+                        })}
+                        <Button onClick={() => { }} style={{ color: "white", marginTop: "20px" }} variant="outlined">
+                            Show live articles
                 </Button>
+                    </Paper>
                 </Paper>
-            </Paper>
-        </div>
-    )
+            </div>
+        )
 }
