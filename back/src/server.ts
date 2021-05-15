@@ -38,3 +38,5 @@ app.use('/api',reviewRouter);
 app.use('*', (req, res) => res.status(404).json({message: "Pagina nu a fost gasita"}));
 
 app.listen(config.server.port, () => logging.info(NAMESPACE, `Server running on ${config.server.hostname}:${config.server.port}`))
+
+export default app;
