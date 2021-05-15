@@ -109,16 +109,15 @@ export const BookPage = (p: RouteComponentProps<{ id: string }>) => {
             if (favorites.filter((id) => id === p.match.params.id)!.length > 0) {
                 console.log("remove")
                 await removeFromFavorites({ email: user.email, bookId: p.match.params.id });
-                window.location.reload();
             } else {
                 console.log("add")
-                window.location.reload();
                 await addToFavorites({ email: user.email, bookId: p.match.params.id });
 
             }
         } else {
             await addToFavorites({ email: user.email, bookId: p.match.params.id });
         }
+        window.location.reload();
     }
 
     if (!book || isLoading) {
