@@ -42,7 +42,9 @@ const useStyles = makeStyles((theme) => ({
 
 const DisplayTitle = (p: {book: Book}) => {
     const classes = useStyles();
-    console.log("inca unul")
+    if(!p.book){
+        return <div></div>
+    }
     return(
         (<>
             <div style={{ display: "flex", flexDirection: "row" }}>
@@ -71,6 +73,8 @@ export const FavoritesPage = () => {
                 const book = await getSingleBook(id);
                 setBooks(books => [...books,book])
             }))
+            isLoading(!loading);
+        }else{
             isLoading(!loading);
         }
 
