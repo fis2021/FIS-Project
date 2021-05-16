@@ -1,8 +1,8 @@
 ### Our FIS project this semester
 
 To run this project there are 2 commands which need to be run:
-`yarn start` in the front folder
-`npm run start-dev` in the back folder
+1.`yarn start` in the front folder
+2.`npm run start-dev` in the back folder
 
 The application can be viewed by opening [http://localhost:3000](http://localhost:3000) in the browser.
 
