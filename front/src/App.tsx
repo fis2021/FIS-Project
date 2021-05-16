@@ -13,6 +13,7 @@ import { AdminAdd } from "./pages/admin-panel/admin-add";
 import { UserContextProvider } from "./contexts/userContext";
 import { SearchContextProvider } from "./contexts/searchContext";
 import { FavoritesPage } from "./pages/favorites-page";
+import { ArticlesPage } from "./pages/articles-page";
 
 const theme = createMuiTheme({
   palette: {
@@ -69,6 +70,11 @@ function App() {
               exact
               path={route(urls.favoritesPage)}
               component={FavoritesPage}
+            />
+            <Route
+              exact
+              path={route(urls.articlesPage)}
+              component={ArticlesPage}
             />
             <Route exact path="/">
               <Redirect to={startUrl()} />

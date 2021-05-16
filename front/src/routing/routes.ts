@@ -12,6 +12,7 @@ export const urls = {
     editBook: (p: {id: string}) => `/admin/edit/${p.id}`,
     bookPage: (p: {id: string}) => `/app/content/${p.id}`,
     favoritesPage: () => '/app/favorites',
+    articlesPage: () => '/app/articles'
 };
 
 export const startUrl = urls.loginPage;
