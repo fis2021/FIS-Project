@@ -9,6 +9,7 @@ import * as bodyParser from 'body-parser';
 import { userRouter } from './routes/user-routes';
 import { getBooksByName } from './controllers/bookController';
 import { reviewRouter } from './routes/review-routes';
+import { scrapperRouter } from './routes/scrapper-routes';
 
 const app: Application = express();
 
@@ -35,6 +36,7 @@ app.use(cors());
 app.use('/api',bookRouter);
 app.use('/api',userRouter);
 app.use('/api',reviewRouter);
+app.use('/api',scrapperRouter);
 app.use('*', (req, res) => res.status(404).json({message: "Pagina nu a fost gasita"}));
 
 app.listen(config.server.port, () => logging.info(NAMESPACE, `Server running on ${config.server.hostname}:${config.server.port}`))
