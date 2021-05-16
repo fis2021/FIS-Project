@@ -4,6 +4,7 @@ import { NavBar } from "../components/navbar"
 import { UserContext } from "../contexts/userContext"
 import { useEffectAsync } from "../hooks/async-hooks"
 import { Book } from "../models/book"
+import { urls, useRouting } from "../routing/routes"
 import { getSingleBook } from "../services/book-service"
 
 
@@ -67,6 +68,8 @@ export const FavoritesPage = () => {
     const [loading,isLoading] = useState(true);
     const [, , favorites] = useContext(UserContext);
 
+    const { routeTo } = useRouting();
+
     useEffectAsync(async () => {
         if (favorites) {
             await Promise.all(favorites.map(async (id) => {
@@ -90,7 +93,7 @@ export const FavoritesPage = () => {
                         {books.map((book,index) => {
                           return <DisplayTitle  book={book} key={index}/>
                         })}
-                        <Button onClick={() => { }} style={{ color: "white", marginTop: "20px" }} variant="outlined">
+                        <Button onClick={() => routeTo(urls.articlesPage)} style={{ color: "white", marginTop: "20px" }} variant="outlined">
                             Show live articles
                 </Button>
                     </Paper>
