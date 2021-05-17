@@ -1,4 +1,10 @@
 ### Our FIS project this semester
+Firstly, you need to install the dependencies
+
+- `yarn install` in the front folder
+
+- `npm install` in the back folder
+
 
 To run this project there are 2 commands which need to be run
 
